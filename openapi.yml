@@ -4,7 +4,10 @@ info:
   version: 1.0.0
 paths:
   /product:
+    summary: Hello world
     get:
+      tags:
+        - Products
       description: Get list of all products in the catalog
       summary: Get list of products
       parameters:
@@ -20,6 +23,8 @@ paths:
         500:
           $ref: '#/components/responses/500ApiError'
     post:
+      tags:
+        - Products
       description: Add product to catalog
       requestBody:
         required: true
@@ -39,6 +44,8 @@ paths:
 
   /product/{productId}:
     get:
+      tags:
+        - Products
       description: Get product by id
       summary: Get product by id
       parameters:
@@ -70,6 +77,8 @@ paths:
 # First challenge
   /blog:
     get:
+      tags:
+        - Blogs
       description: Get list of blogs
       summary: List of blogs
       responses:
@@ -80,32 +89,32 @@ paths:
               schema:
                 type: array
                 items:
-                  properties:
-                    id: 
-                      type: integer
-                      example: 1
-                    createdDate:
-                      type: string
-                      format: date
-                      example: 2023-01-01
-                    tagline:
-                      type: string
-                      example: How to efficient push up?
-                    content:
-                      type: string
-                      example: Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
-                    category: 
-                      type: string
-                      example: exercises
-                    tags: 
-                      type: array
-                      example: 
-                        - exercises
-                        - pushup
-                        - workout
+                  $ref: '#/components/schemas/Blog'
+                  
         500:
           $ref: '#/components/responses/500ApiError'
 
+# Second Challenge [POST]
+    post:
+      tags:
+        - Blogs
+      description: Create new Blog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Blog'
+      responses:
+        201:
+          description: Blog is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Blog'
+        500:
+          $ref: '#/components/responses/500ApiError'
+         
 # Schemas
 components:
   schemas:
@@ -151,6 +160,32 @@ components:
           type: integer
           example: 10
 
+    Blog: 
+      type: object
+      properties:
+         id: 
+           type: integer
+           example: 1
+         createdDate:
+           type: string
+           format: date
+           example: 2023-01-01
+         tagline:
+           type: string
+           example: How to efficient push up?
+         content:
+           type: string
+           example: Lorem ipsum dolor sit amet Lorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit ametLorem ipsum dolor sit amet
+         category: 
+           type: string
+           example: exercises
+         tags: 
+           type: array
+           example: 
+             - exercises
+             - pushup
+             - workout
+
     ProductsSearchResult:
       type: object
       properties:
@@ -159,6 +194,7 @@ components:
         pagination:
           $ref: '#/components/schemas/Meta'
     
+
   responses:
     500ApiError:
       description: Unexpected Error
